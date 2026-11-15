@@ -81,6 +81,7 @@ def root():
     }
 
 @app.get("/health")
+@app.get("/api/health")
 def healthcheck():
     return {
         "status": "healthy",
@@ -89,6 +90,7 @@ def healthcheck():
     }
 
 @app.get("/readiness")
+@app.get("/api/readiness")
 def readiness_check():
     """Validates real backend dependencies (database, storage, Earthdata service) rather than hardcoded response."""
     db_ok = False

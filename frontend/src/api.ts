@@ -1,15 +1,15 @@
 import { EarthdataStatus, DatasetInfo, AnalysisMetrics, GranuleMetadata, CaseStudy } from './types';
 
-const API_BASE = '/api';
+const API_BASE = import.meta.env.VITE_API_BASE_URL || '/api';
 
 export async function fetchHealth(): Promise<{ status: string; earthdata_configured: boolean; demo_scenes_ready: boolean }> {
-  const res = await fetch('/health');
+  const res = await fetch(`${API_BASE}/health`);
   if (!res.ok) throw new Error('Failed to fetch health');
   return res.json();
 }
 
 export async function fetchReadiness(): Promise<any> {
-  const res = await fetch('/readiness');
+  const res = await fetch(`${API_BASE}/readiness`);
   return res.json();
 }
 

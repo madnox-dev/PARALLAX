@@ -23,7 +23,7 @@ class Settings(BaseSettings):
     ]
 
     # Storage paths
-    DATA_DIR: Path = BASE_DIR / "data"
+    DATA_DIR: Path = (BACKEND_DIR / "data") if (BACKEND_DIR / "data").exists() else (BASE_DIR / "data")
     RAW_DIR: Path = BASE_DIR / "data" / "raw"
     PROCESSED_DIR: Path = BASE_DIR / "data" / "processed"
     CASES_DIR: Path = BASE_DIR / "data" / "cases"
@@ -46,6 +46,9 @@ class Settings(BaseSettings):
 
 settings = Settings()
 
-# Ensure directories exist
+# Ensure directories exist if filesystem is writable
 for path in [settings.DATA_DIR, settings.RAW_DIR, settings.PROCESSED_DIR, settings.CASES_DIR, settings.CACHE_DIR]:
-    path.mkdir(parents=True, exist_ok=True)
+    try:
+        path.mkdir(parents=True, exist_ok=True)
+    except OSError:
+        pass
