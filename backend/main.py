@@ -8,9 +8,12 @@ from pathlib import Path
 # Add backend directory and parent directory to sys.path so 'app' and 'backend' imports resolve
 CURRENT_DIR = Path(__file__).resolve().parent
 PARENT_DIR = CURRENT_DIR.parent
-for directory in [str(CURRENT_DIR), str(PARENT_DIR)]:
-    if directory not in sys.path:
-        sys.path.insert(0, directory)
+# Backend dir must take priority so `app` resolves to backend/app, not a parent directory.
+if str(CURRENT_DIR) not in sys.path:
+    sys.path.insert(0, str(CURRENT_DIR))
+# Parent dir is only needed locally so `backend.service` imports resolve; keep it last.
+if str(PARENT_DIR) not in sys.path:
+    sys.path.append(str(PARENT_DIR))
 
 from app.main import app
 
